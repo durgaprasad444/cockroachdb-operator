@@ -1,0 +1,101 @@
+clusterDomain: cluster.local
+conf:
+  attrs: []
+  cache: 25%
+  cluster-name: ""
+  disable-cluster-name-verification: false
+  http-port: 8080
+  join: []
+  locality: ""
+  logtostderr: INFO
+  max-disk-temp-storage: 0
+  max-offset: 500ms
+  max-sql-memory: 25%
+  port: 26257
+  single-node: false
+  sql-audit-dir: ""
+image:
+  credentials: {}
+  pullPolicy: IfNotPresent
+  repository: cockroachdb/cockroach
+  tag: v19.2.5
+init:
+  affinity: {}
+  annotations: {}
+  labels:
+    app.kubernetes.io/component: init
+  nodeSelector: {}
+  resources: {}
+  tolerations: []
+labels: {}
+networkPolicy:
+  enabled: false
+  ingress:
+    grpc: []
+    http: []
+service:
+  discovery:
+    annotations: {}
+    labels:
+      app.kubernetes.io/component: cockroachdb
+  ports:
+    grpc:
+      external:
+        name: grpc
+        port: 26257
+      internal:
+        name: grpc-internal
+        port: 26257
+    http:
+      name: http
+      port: 8080
+  public:
+    annotations: {}
+    labels:
+      app.kubernetes.io/component: cockroachdb
+    type: ClusterIP
+statefulset:
+  annotations: {}
+  args: []
+  budget:
+    maxUnavailable: 1
+  env: []
+  labels:
+    app.kubernetes.io/component: cockroachdb
+  nodeAffinity: {}
+  nodeSelector: {}
+  podAffinity: {}
+  podAntiAffinity:
+    type: soft
+    weight: 100
+  podManagementPolicy: Parallel
+  replicas: 3
+  resources: {}
+  secretMounts: []
+  tolerations: []
+  updateStrategy:
+    type: RollingUpdate
+storage:
+  hostPath: ""
+  persistentVolume:
+    annotations: {}
+    enabled: true
+    labels: {}
+    size: 100Gi
+    storageClass: ""
+tls:
+  certs:
+    clientRootSecret: cockroachdb-root
+    nodeSecret: cockroachdb-node
+    provided: false
+    tlsSecret: false
+  enabled: false
+  init:
+    image:
+      credentials: {}
+      pullPolicy: IfNotPresent
+      repository: cockroachdb/cockroach-k8s-request-cert
+      tag: "0.4"
+  serviceAccount:
+    create: true
+    name: ""
